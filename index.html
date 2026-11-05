@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hội Thảo Chuyển Đổi Số Trong Trường Học - Trường THPT Chuyên Lê Quý Đôn</title>
+    <title>Hội Thảo Chuyển Đổi Số - Trường THPT Chuyên Lê Quý Đôn</title>
     <style>
         * { box-sizing: border-box; }
+        
+        /* Hiệu ứng nền chuyển màu động lung linh */
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #f1f5f9;
+            background: linear-gradient(125deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #f8fafc;
             margin: 0;
             padding: 15px;
             display: flex;
@@ -18,15 +22,23 @@
             min-height: 100vh;
         }
 
-        /* Header sang trọng */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header phong cách kính mờ phát sáng */
         header {
             width: 100%;
             max-width: 950px;
-            background: linear-gradient(135deg, #1e3a8a, #2563eb, #1d4ed8);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 25px 20px;
             text-align: center;
-            border-radius: 14px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
             margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -36,15 +48,16 @@
             max-width: 950px;
         }
 
-        /* Thẻ chọn tài liệu */
+        /* Thẻ chọn tài liệu công nghệ cao */
         .topic-card {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.2);
         }
         .topic-card h2 { 
             margin-top: 0; 
@@ -57,19 +70,20 @@
 
         select {
             width: 100%;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background-color: #0b0f19;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            background-color: rgba(15, 23, 42, 0.8);
             color: #f8fafc;
             font-size: 15px;
             outline: none;
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
         }
         select:focus {
             border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 2px 4px rgba(0,0,0,0.5);
         }
 
         #status { 
@@ -78,6 +92,7 @@
             color: #34d399; 
             text-align: center; 
             font-size: 14px; 
+            text-shadow: 0 0 10px rgba(52, 211, 153, 0.3);
         }
 
         /* Khung hiển thị sách lật */
@@ -86,33 +101,34 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.97) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         #book {
             margin: 0 auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            border-radius: 4px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            border-radius: 6px;
         }
 
-        /* Tờ giấy đọc sách mượt mà */
+        /* Trang sách phong cách giấy thủ công cao cấp */
         .page {
-            background-color: #fcfaf2; /* Màu giấy kem cao cấp */
+            background-color: #fffbf2;
             color: #1e293b;
             padding: 25px;
             overflow-y: auto;
             font-size: 14px;
             line-height: 1.7;
+            box-shadow: inset -5px 0 15px rgba(0,0,0,0.05);
         }
-        .page img { max-width: 100%; height: auto; display: block; margin: 15px auto; border-radius: 6px; }
-        .page h1, .page h2, .page h3 { color: #0f172a; }
+        .page img { max-width: 100%; height: auto; display: block; margin: 15px auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .page h1, .page h2, .page h3 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; }
 
-        /* Nút chuyển trang hiện đại */
+        /* Nút chuyển trang phong cách Neon Gradient */
         .nav-btns {
             margin: 20px 0;
             display: flex;
@@ -121,26 +137,26 @@
             width: 100%;
         }
         .btn {
-            background: linear-gradient(135deg, #0284c7, #0369a1);
+            background: linear-gradient(135deg, #0284c7, #2563eb);
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
             font-size: 14px;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-            transition: all 0.2s;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
         }
         .btn:hover { 
-            background: linear-gradient(135deg, #0369a1, #075985);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.4);
+            background: linear-gradient(135deg, #0369a1, #1d4ed8);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(37, 99, 235, 0.6);
         }
         .btn:active { transform: translateY(0); }
     </style>
 
-    <!-- Thư viện hỗ trợ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <script>
@@ -153,13 +169,13 @@
 <body>
 
     <header>
-        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #93c5fd; margin-bottom: 8px;">
-            TRƯỜNG THPT CHUYÊN LÊ QUÝ ĐÔN
+        <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2.5px; color: #38bdf8; margin-bottom: 8px; text-shadow: 0 0 10px rgba(56,189,248,0.5);">
+            ⭐ TRƯỜNG THPT CHUYÊN LÊ QUÝ ĐÔN ⭐
         </div>
-        <h1 style="margin: 0 0 8px 0; font-size: 20px; text-transform: uppercase; line-height: 1.4; color: #ffffff;">
+        <h1 style="margin: 0 0 8px 0; font-size: 21px; text-transform: uppercase; line-height: 1.4; color: #ffffff; letter-spacing: 0.5px;">
             HỘI THẢO CHUYỂN ĐỔI SỐ TRONG TRƯỜNG HỌC
         </h1>
-        <p style="margin: 0; opacity: 0.9; font-size: 13px; color: #e2e8f0;">
+        <p style="margin: 0; opacity: 0.9; font-size: 13px; color: #94a3b8;">
             📖 Thư viện Tài liệu & Báo cáo Số Trực Tuyến
         </p>
     </header>
@@ -224,7 +240,7 @@
                 .then(arrayBuffer => {
                     return mammoth.convertToHtml({ arrayBuffer: arrayBuffer }, {
                         convertImage: mammoth.images.imgElement(img => {
-                            return img.read("base64").then(b64 => ({ src: "data:" + img.contentType + ";base64," + b64 }));
+                            return img.read("base64").then(b64 => ({ src: "data:" + img.contentType + ";base64," + b64 }))
                         })
                     });
                 })
