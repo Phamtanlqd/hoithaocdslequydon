@@ -27,8 +27,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             margin-bottom: 15px;
         }
-        header h1 { margin: 0 0 5px 0; font-size: 20px; text-transform: uppercase; }
-        header p { margin: 0; opacity: 0.9; font-size: 13px; }
 
         .container {
             width: 100%;
@@ -56,7 +54,6 @@
 
         #status { margin-top: 8px; font-weight: bold; color: #34d399; text-align: center; font-size: 14px; }
 
-        /* Khung chứa sách lật tối ưu Mobile */
         .book-wrapper {
             display: none;
             flex-direction: column;
@@ -111,8 +108,15 @@
 <body>
 
     <header>
-        <h1>HỘI THẢO CHUYỂN ĐỔI SỐ</h1>
-        <p>📖 Thư viện Tài liệu & Báo cáo Số</p>
+        <div style="font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; color: #cbd5e1; margin-bottom: 6px;">
+            TRƯỜNG THPT CHUYÊN LÊ QUÝ ĐÔN
+        </div>
+        <h1 style="margin: 0 0 6px 0; font-size: 20px; text-transform: uppercase; line-height: 1.3;">
+            HỘI THẢO CHUYỂN ĐỔI SỐ TRONG TRƯỜNG HỌC
+        </h1>
+        <p style="margin: 0; opacity: 0.9; font-size: 13px;">
+            📖 Thư viện Tài liệu & Báo cáo Số
+        </p>
     </header>
 
     <div class="container">
@@ -165,7 +169,7 @@
         function loadReport(fileUrl) {
             if (!fileUrl) return;
             const status = document.getElementById('status');
-            status.innerText = "⏳ Đang tải tài liệu...";
+            status.innerText = "⏳ Đang tải và dựng tài liệu...";
 
             fetch(fileUrl)
                 .then(res => {
@@ -217,16 +221,15 @@
 
             if (pageFlip) pageFlip.destroy();
 
-            // Tự động điều chỉnh kích thước theo màn hình điện thoại hay máy tính
             const isMobile = window.innerWidth < 768;
             
             pageFlip = new St.PageFlip(bookDiv, {
-                width: isMobile ? 320 : 420,   // Chiều rộng nhỏ hơn trên điện thoại
-                height: isMobile ? 480 : 580,  // Chiều cao tối ưu màn hình dọc
+                width: isMobile ? 320 : 420,
+                height: isMobile ? 480 : 580,
                 size: isMobile ? "fixed" : "stretch",
                 maxShadowOpacity: 0.5,
                 showCover: true,
-                mobileScrollSupport: true      // Hỗ trợ cuộn và lật mượt trên di động
+                mobileScrollSupport: true
             });
 
             pageFlip.loadFromHTML(document.querySelectorAll('.page'));
