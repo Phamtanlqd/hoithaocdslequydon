@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hội Thảo Chuyển Đổi Số Giáo Dục - Thư Viện Tài Liệu Số</title>
+    <title>Hội Thảo Chuyển Đổi Số Trong Trường Học - Thư Viện Tài Liệu Số</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -118,9 +118,6 @@
             <h2>📌 Chọn Báo cáo / Chuyên đề trải nghiệm:</h2>
             <select id="topicSelect" onchange="loadReport(this.value)">
                 <option value="">-- Kính mời Đại biểu chọn tài liệu --</option>
-                <option value="data/bao-cao-trung-tam.docx">📋 Báo cáo trung tâm: Thực trạng & Giải pháp Chuyển đổi số</option>
-                <option value="data/chuyen-de-stem.docx">🔬 Chuyên đề 1: Ứng dụng AI & STEM trong giảng dạy</option>
-                <option value="data/chuyen-de-quan-ly.docx">📊 Chuyên đề 2: Quản trị nhà trường thông minh</option>
             </select>
             <div id="status"></div>
         </div>
@@ -136,16 +133,48 @@
     </div>
 
     <script>
+        // Cấu hình thông tin GitHub của bạn
+        const GITHUB_USER = "Phamtanlqd";       // Tên tài khoản GitHub của bạn
+        const REPO_NAME = "hoithaocdslequydon"; // Tên repository của bạn
+        const FOLDER_PATH = "data";              // Thư mục chứa file trên GitHub
+
+        // Tự động quét thư mục data trên GitHub khi trang vừa mở
+        window.onload = function() {
+            fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/${FOLDER_PATH}`)
+                .then(response => response.json())
+                .then(files => {
+                    const selectBox = document.getElementById('topicSelect');
+                    
+                    files.forEach(file => {
+                        if (file.name.endsWith('.docx')) {
+                            const option = document.createElement('option');
+                            option.value = file.download_url; // Link tải trực tiếp file từ GitHub
+                            
+                            // Làm đẹp tên hiển thị (bỏ đuôi .docx và thay dấu gạch ngang bằng khoảng trắng)
+                            let displayName = file.name.replace('.docx', '').replace(/-/g, ' ');
+                            displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+                            
+                            option.textContent = "📄 " + displayName;
+                            selectBox.appendChild(option);
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.error("Không thể tải danh sách file tự động:", err);
+                    document.getElementById('status').innerText = "❌ Không thể tải danh sách tài liệu tự động.";
+                });
+        };
+
         let pageFlip = null;
 
-        function loadReport(filePath) {
-            if (!filePath) return;
+        function loadReport(fileUrl) {
+            if (!fileUrl) return;
             const status = document.getElementById('status');
             status.innerText = "⏳ Đang tải và dựng tài liệu HTML5...";
 
-            fetch(filePath)
+            fetch(fileUrl)
                 .then(res => {
-                    if (!res.ok) throw new Error("File chưa sẵn sàng hoặc không tìm thấy!");
+                    if (!res.ok) throw new Error("Không tìm thấy file tài liệu!");
                     return res.arrayBuffer();
                 })
                 .then(arrayBuffer => {
@@ -156,7 +185,7 @@
                     });
                 })
                 .then(result => {
-                    status.innerText = "✅ Tải hoàn tất! Cuộn hoặc gạt để lật trang.";
+                    status.innerText = "✅ Tải hoàn tất! Mời đại biểu trải nghiệm lật trang.";
                     renderFlipbook(result.value);
                 })
                 .catch(err => {
