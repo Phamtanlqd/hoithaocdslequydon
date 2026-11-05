@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hội Thảo Chuyển Đổi Số Giáo Dục - Thư Viện Tài Liệu Số</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #1e293b;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Banner Hội Thảo */
+        header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        header h1 { margin: 0 0 10px 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; }
+        header p { margin: 0; opacity: 0.9; font-size: 15px; }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Khu vực chọn Báo cáo/Tài liệu */
+        .topic-card {
+            background: #334155;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .topic-card h2 { margin-top: 0; color: #60a5fa; font-size: 18px; }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background-color: #0f172a;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #status { margin-top: 10px; font-weight: bold; color: #34d399; text-align: center; }
+
+        /* Khung hiển thị sách lật */
+        .book-wrapper {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #book {
+            width: 100%;
+            max-width: 900px;
+            height: 600px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .page {
+            background-color: #fff8f0; /* Giấy kem đọc không mỏi mắt */
+            color: #1e293b;
+            padding: 25px;
+            overflow-y: auto;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .page img { max-width: 100%; height: auto; display: block; margin: 10px auto; }
+
+        /* Nút chuyển trang */
+        .nav-btns {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn:hover { background: #1d4ed8; }
+    </style>
+
+    <!-- Thư viện Mammoth.js, PageFlip & MathJax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>HỘI THẢO CHUYỂN ĐỔI SỐ TRONG TRƯỜNG HỌC</h1>
+        <p>📖 Thư viện Báo cáo & Tài liệu Chuyên đề Điện tử</p>
+    </header>
+
+    <div class="container">
+        <div class="topic-card">
+            <h2>📌 Chọn Báo cáo / Chuyên đề trải nghiệm:</h2>
+            <select id="topicSelect" onchange="loadReport(this.value)">
+                <option value="">-- Kính mời Đại biểu chọn tài liệu --</option>
+                <option value="data/bao-cao-trung-tam.docx">📋 Báo cáo trung tâm: Thực trạng & Giải pháp Chuyển đổi số</option>
+                <option value="data/chuyen-de-stem.docx">🔬 Chuyên đề 1: Ứng dụng AI & STEM trong giảng dạy</option>
+                <option value="data/chuyen-de-quan-ly.docx">📊 Chuyên đề 2: Quản trị nhà trường thông minh</option>
+            </select>
+            <div id="status"></div>
+        </div>
+
+        <div class="book-wrapper" id="bookWrapper">
+            <div class="nav-btns">
+                <button class="btn" onclick="pageFlip.flipPrev()">◀ Trang Trước</button>
+                <button class="btn" onclick="pageFlip.flipNext()">Trang Sau ▶</button>
+            </div>
+            <br>
+            <div id="book"></div>
+        </div>
+    </div>
+
+    <script>
+        let pageFlip = null;
+
+        function loadReport(filePath) {
+            if (!filePath) return;
+            const status = document.getElementById('status');
+            status.innerText = "⏳ Đang tải và dựng tài liệu HTML5...";
+
+            fetch(filePath)
+                .then(res => {
+                    if (!res.ok) throw new Error("File chưa sẵn sàng hoặc không tìm thấy!");
+                    return res.arrayBuffer();
+                })
+                .then(arrayBuffer => {
+                    return mammoth.convertToHtml({ arrayBuffer: arrayBuffer }, {
+                        convertImage: mammoth.images.imgElement(img => {
+                            return img.read("base64").then(b64 => ({ src: "data:" + img.contentType + ";base64," + b64 }));
+                        })
+                    });
+                })
+                .then(result => {
+                    status.innerText = "✅ Tải hoàn tất! Cuộn hoặc gạt để lật trang.";
+                    renderFlipbook(result.value);
+                })
+                .catch(err => {
+                    status.innerText = "❌ Lỗi: " + err.message;
+                });
+        }
+
+        function renderFlipbook(htmlContent) {
+            const bookDiv = document.getElementById('book');
+            bookDiv.innerHTML = '';
+
+            const temp = document.createElement('div');
+            temp.innerHTML = htmlContent;
+            const nodes = Array.from(temp.childNodes);
+
+            let currentPage = document.createElement('div');
+            currentPage.className = 'page';
+            let length = 0;
+
+            nodes.forEach(node => {
+                const len = node.textContent ? node.textContent.length : 0;
+                if (length > 700 && ['H1','H2','P'].includes(node.nodeName)) {
+                    bookDiv.appendChild(currentPage);
+                    currentPage = document.createElement('div');
+                    currentPage.className = 'page';
+                    length = 0;
+                }
+                currentPage.appendChild(node.cloneNode(true));
+                length += len;
+            });
+            if (currentPage.childNodes.length > 0) bookDiv.appendChild(currentPage);
+
+            document.getElementById('bookWrapper').style.display = 'flex';
+
+            if (pageFlip) pageFlip.destroy();
+            pageFlip = new St.PageFlip(bookDiv, {
+                width: 450, height: 600, size: "fixed", showCover: true, maxShadowOpacity: 0.5
+            });
+
+            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+            if (window.MathJax) MathJax.typesetPromise([bookDiv]);
+        }
+    </script>
+</body>
+</html>
