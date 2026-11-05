@@ -11,78 +11,80 @@
             background-color: #1e293b;
             color: #f8fafc;
             margin: 0;
-            padding: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Banner Hội Thảo */
         header {
+            width: 100%;
+            max-width: 900px;
             background: linear-gradient(135deg, #1e40af, #3b82f6);
-            padding: 30px 20px;
+            padding: 20px;
             text-align: center;
+            border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
         }
-        header h1 { margin: 0 0 10px 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; }
-        header p { margin: 0; opacity: 0.9; font-size: 15px; }
+        header h1 { margin: 0 0 5px 0; font-size: 20px; text-transform: uppercase; }
+        header p { margin: 0; opacity: 0.9; font-size: 13px; }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 15px;
+            width: 100%;
+            max-width: 900px;
         }
 
-        /* Khu vực chọn Báo cáo/Tài liệu */
         .topic-card {
             background: #334155;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
-        .topic-card h2 { margin-top: 0; color: #60a5fa; font-size: 18px; }
+        .topic-card h2 { margin-top: 0; color: #60a5fa; font-size: 16px; }
 
         select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #475569;
             background-color: #0f172a;
             color: #fff;
-            font-size: 16px;
-            cursor: pointer;
+            font-size: 15px;
         }
 
-        #status { margin-top: 10px; font-weight: bold; color: #34d399; text-align: center; }
+        #status { margin-top: 8px; font-weight: bold; color: #34d399; text-align: center; font-size: 14px; }
 
-        /* Khung hiển thị sách lật */
+        /* Khung chứa sách lật tối ưu Mobile */
         .book-wrapper {
             display: none;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
+            width: 100%;
         }
 
         #book {
-            width: 100%;
-            max-width: 900px;
-            height: 600px;
+            margin: 0 auto;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .page {
-            background-color: #fff8f0; /* Giấy kem đọc không mỏi mắt */
+            background-color: #fff8f0;
             color: #1e293b;
-            padding: 25px;
+            padding: 20px;
             overflow-y: auto;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.6;
         }
         .page img { max-width: 100%; height: auto; display: block; margin: 10px auto; }
 
-        /* Nút chuyển trang */
         .nav-btns {
-            margin-top: 15px;
+            margin: 15px 0;
             display: flex;
             gap: 15px;
+            justify-content: center;
+            width: 100%;
         }
         .btn {
             background: #2563eb;
@@ -92,11 +94,11 @@
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 14px;
         }
         .btn:hover { background: #1d4ed8; }
     </style>
 
-    <!-- Thư viện Mammoth.js, PageFlip & MathJax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
     <script>
@@ -109,13 +111,13 @@
 <body>
 
     <header>
-        <h1>HỘI THẢO CHUYỂN ĐỔI SỐ TRONG TRƯỜNG HỌC</h1>
-        <p>📖 Thư viện Báo cáo & Tài liệu Chuyên đề Điện tử</p>
+        <h1>HỘI THẢO CHUYỂN ĐỔI SỐ</h1>
+        <p>📖 Thư viện Tài liệu & Báo cáo Số</p>
     </header>
 
     <div class="container">
         <div class="topic-card">
-            <h2>📌 Chọn Báo cáo / Chuyên đề trải nghiệm:</h2>
+            <h2>📌 Chọn Tài liệu trải nghiệm:</h2>
             <select id="topicSelect" onchange="loadReport(this.value)">
                 <option value="">-- Kính mời Đại biểu chọn tài liệu --</option>
             </select>
@@ -124,44 +126,37 @@
 
         <div class="book-wrapper" id="bookWrapper">
             <div class="nav-btns">
-                <button class="btn" onclick="pageFlip.flipPrev()">◀ Trang Trước</button>
-                <button class="btn" onclick="pageFlip.flipNext()">Trang Sau ▶</button>
+                <button class="btn" onclick="pageFlip.flipPrev()">◀ Trước</button>
+                <button class="btn" onclick="pageFlip.flipNext()">Sau ▶</button>
             </div>
-            <br>
             <div id="book"></div>
         </div>
     </div>
 
     <script>
-        // Cấu hình thông tin GitHub của bạn
-        const GITHUB_USER = "Phamtanlqd";       // Tên tài khoản GitHub của bạn
-        const REPO_NAME = "hoithaocdslequydon"; // Tên repository của bạn
-        const FOLDER_PATH = "data";              // Thư mục chứa file trên GitHub
+        const GITHUB_USER = "Phamtanlqd";
+        const REPO_NAME = "hoithaocdslequydon";
+        const FOLDER_PATH = "data";
 
-        // Tự động quét thư mục data trên GitHub khi trang vừa mở
         window.onload = function() {
             fetch(`https://api.github.com/repos/${GITHUB_USER}/${REPO_NAME}/contents/${FOLDER_PATH}`)
-                .then(response => response.json())
+                .then(res => res.json())
                 .then(files => {
                     const selectBox = document.getElementById('topicSelect');
-                    
                     files.forEach(file => {
                         if (file.name.endsWith('.docx')) {
                             const option = document.createElement('option');
-                            option.value = file.download_url; // Link tải trực tiếp file từ GitHub
-                            
-                            // Làm đẹp tên hiển thị (bỏ đuôi .docx và thay dấu gạch ngang bằng khoảng trắng)
+                            option.value = file.download_url;
                             let displayName = file.name.replace('.docx', '').replace(/-/g, ' ');
                             displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-                            
                             option.textContent = "📄 " + displayName;
                             selectBox.appendChild(option);
                         }
                     });
                 })
                 .catch(err => {
-                    console.error("Không thể tải danh sách file tự động:", err);
-                    document.getElementById('status').innerText = "❌ Không thể tải danh sách tài liệu tự động.";
+                    console.error("Lỗi tải danh sách:", err);
+                    document.getElementById('status').innerText = "❌ Không thể tải danh sách tài liệu.";
                 });
         };
 
@@ -170,11 +165,11 @@
         function loadReport(fileUrl) {
             if (!fileUrl) return;
             const status = document.getElementById('status');
-            status.innerText = "⏳ Đang tải và dựng tài liệu HTML5...";
+            status.innerText = "⏳ Đang tải tài liệu...";
 
             fetch(fileUrl)
                 .then(res => {
-                    if (!res.ok) throw new Error("Không tìm thấy file tài liệu!");
+                    if (!res.ok) throw new Error("Không tìm thấy file!");
                     return res.arrayBuffer();
                 })
                 .then(arrayBuffer => {
@@ -185,7 +180,7 @@
                     });
                 })
                 .then(result => {
-                    status.innerText = "✅ Tải hoàn tất! Mời đại biểu trải nghiệm lật trang.";
+                    status.innerText = "✅ Tải xong! Mời đại biểu xem tài liệu.";
                     renderFlipbook(result.value);
                 })
                 .catch(err => {
@@ -207,7 +202,7 @@
 
             nodes.forEach(node => {
                 const len = node.textContent ? node.textContent.length : 0;
-                if (length > 700 && ['H1','H2','P'].includes(node.nodeName)) {
+                if (length > 500 && ['H1','H2','P'].includes(node.nodeName)) {
                     bookDiv.appendChild(currentPage);
                     currentPage = document.createElement('div');
                     currentPage.className = 'page';
@@ -221,8 +216,17 @@
             document.getElementById('bookWrapper').style.display = 'flex';
 
             if (pageFlip) pageFlip.destroy();
+
+            // Tự động điều chỉnh kích thước theo màn hình điện thoại hay máy tính
+            const isMobile = window.innerWidth < 768;
+            
             pageFlip = new St.PageFlip(bookDiv, {
-                width: 450, height: 600, size: "fixed", showCover: true, maxShadowOpacity: 0.5
+                width: isMobile ? 320 : 420,   // Chiều rộng nhỏ hơn trên điện thoại
+                height: isMobile ? 480 : 580,  // Chiều cao tối ưu màn hình dọc
+                size: isMobile ? "fixed" : "stretch",
+                maxShadowOpacity: 0.5,
+                showCover: true,
+                mobileScrollSupport: true      // Hỗ trợ cuộn và lật mượt trên di động
             });
 
             pageFlip.loadFromHTML(document.querySelectorAll('.page'));
